@@ -92,9 +92,8 @@ class ProspektScraper:
         all_valid_brochures = []
 
         for shop_name, url in sidebar_urls.items():
-            if shop_name == "Kaufland":
-                shop_brochures = self.process_shop(shop_name, url)
-                all_valid_brochures.extend(shop_brochures)
+            shop_brochures = self.process_shop(shop_name, url)
+            all_valid_brochures.extend(shop_brochures)
 
         return all_valid_brochures
     
@@ -181,7 +180,7 @@ class ProspektScraper:
             results: List of brochure objects
 
         """
-        # print(len(results))
+        print(len(results))
 
         # Convert dictionaries to JSON
         json_list = [b.__dict__ for b in results]
