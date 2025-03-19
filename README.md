@@ -48,7 +48,7 @@ PROSPEKT_SCRAPER/
 ├── app/                # Main application code
 ├── models/             # Data models
 ├── utils/              # Utility functions
-└── output/              # Output directory
+└── output/             # Output directory
 ```
 
 ## License
