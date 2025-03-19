@@ -2,7 +2,7 @@ import json
 import random
 import time
 from typing import Dict, List, Optional
-from scraper.brochure import Brochure
+from models.brochure import Brochure
 from playwright.sync_api import sync_playwright, Locator
 
 from utils.date_utils import extract_dates, is_valid_now

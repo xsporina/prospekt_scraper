@@ -1,5 +1,6 @@
-from scraper.scraper import ProspektScraper
+from app.scraper import ProspektScraper
 
 if __name__ == "__main__":
-    scraper = ProspektScraper("https://www.prospektmaschine.de/hypermarkte/")
+    scrape_url = "https://www.prospektmaschine.de/hypermarkte/"
+    scraper = ProspektScraper(scrape_url)
     scraper.run()
