@@ -30,6 +30,7 @@ graph TD;
     L --> D
     D --> M[Save results to JSON]
     M --> N[Close browser]
+```
 
 ## Installation
 
