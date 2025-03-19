@@ -5,12 +5,12 @@ from typing import Dict, List, Optional
 from models.brochure import Brochure
 from playwright.sync_api import sync_playwright, Locator
 
-from utils.date_utils import extract_dates, is_valid_now
+from utils.date_utils import extract_dates, is_valid_now, reformat_dates
 
 class ProspektScraper:
     """ Scraper for prospektmaschine.de."""
 
-    def __init__(self, hypermarket_url, output_file="output/output.json"):
+    def __init__(self, hypermarket_url, date_format="%Y-%m-%d", output_file="output/output.json"):
         """ Initialize scraper.
         
         Args:
@@ -26,6 +26,7 @@ class ProspektScraper:
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
         )
         self.page = self.context.new_page()
+        self.date_format = date_format
     
     def run(self):
         """ Main execution
@@ -155,9 +156,13 @@ class ProspektScraper:
         # Get text of the element with the dates
         date_text = brochure.locator(".grid-item-content small.hidden-sm").text_content()
         dates = extract_dates(date_text or "")
+        
+        # Format dates to yyyy-mm-dd
+        if self.date_format != "%d.%m.%Y":
+            dates = reformat_dates(dates, "%d.%m.%Y", self.date_format)
 
         # Check if date is currently valid
-        if not is_valid_now(dates[0], dates[1]):
+        if not is_valid_now(dates[0], dates[1], self.date_format):
             return None
         
         return Brochure(
