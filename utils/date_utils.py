@@ -43,18 +43,18 @@ def reformat_dates(dates: List[str], input_format: str, output_format: str) -> L
     reformatted_dates = []
 
     for date in dates:
-        if date != "":
+        # If empty date, keep empty
+        if date == "":
+            reformatted_dates.append("")
+
+        else:
             # Turn str into datetime obj
             date_obj = datetime.strptime(date, input_format)
 
             # Turn datetime obj into reformatted str
             reformatted_date = date_obj.strftime(output_format)
 
-            reformatted_dates.append(reformatted_date)
-        
-        # If empty date, attach empty string
-        else:
-            reformatted_dates.append("")
+            reformatted_dates.append(reformatted_date)            
     
     return reformatted_dates
 
