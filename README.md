@@ -1,6 +1,6 @@
 # Prospekt Scraper
 
-A web scraper for prospektmaschine.de that collects brochure information from various shops.
+A web scraper for prospektmaschine.de that collects brochure information from hypermarket category shops.
 
 ## Features
 
