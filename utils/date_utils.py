@@ -72,6 +72,11 @@ def is_valid_now(from_date: Optional[str], to_date: Optional[str], date_format: 
     """
     date_format = date_format
     date_now = datetime.now()
+    
+    # Put 0 hours, minutes, seconds
+    # otherwise same-day comparisons won't work, 
+    # Date from website is always 00:00:00 clock time
+    date_now = date_now.replace(hour=0, minute=0, second=0, microsecond=0)
 
     # Transform date strings into datetime for comparison
     try:

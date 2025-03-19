@@ -92,8 +92,9 @@ class ProspektScraper:
         all_valid_brochures = []
 
         for shop_name, url in sidebar_urls.items():
-            shop_brochures = self.process_shop(shop_name, url)
-            all_valid_brochures.extend(shop_brochures)
+            if shop_name == "Kaufland":
+                shop_brochures = self.process_shop(shop_name, url)
+                all_valid_brochures.extend(shop_brochures)
 
         return all_valid_brochures
     
