@@ -13,7 +13,7 @@ A web scraper for prospektmaschine.de that collects brochure information from va
 The following diagram illustrates the workflow of the ProspektScraper:
 
 ```mermaid
-graph TD
+graph TD;
     A[Initialize ProspektScraper] --> B[Navigate to hypermarket URL]
     B --> C[Extract sidebar shop URLs]
     C --> D[For each shop URL]
