@@ -10,8 +10,6 @@ A web scraper for prospektmaschine.de that collects brochure information from va
 
 ## How It Works
 
-The following diagram illustrates the workflow of the ProspektScraper:
-
 ```mermaid
 graph TD;
     A[Initialize ProspektScraper] --> B[Navigate to hypermarket URL]
