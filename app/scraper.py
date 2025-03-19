@@ -27,12 +27,19 @@ class ProspektScraper:
         )
         self.page = self.context.new_page()
     
-    def close_browser(self):
-        """ Close browser and playwright. 
+    def run(self):
+        """ Main execution
         
         """
-        self.browser.close()
-        self.playwright.stop()
+        try:
+            self.navigate_to(self.hypermarket_url)
+            sidebar_urls = self.get_sidebar_urls()
+            results = self.process_all_shops(sidebar_urls)
+            self.save_results(results)
+        except Exception as e:
+            print(f"Error occured: {e}")
+        finally:
+            self.close_browser()
     
     def navigate_to(self, url):
         """ Navigate to URL while imitating human behavior.
@@ -71,40 +78,23 @@ class ProspektScraper:
 
         return links
     
-    def parse_brochure(self, brochure: Locator, shop_name: str) -> Optional[Brochure]:
-        """ Parse brochure data.
-
+    def process_all_shops(self, sidebar_urls: Dict[str, str]) -> List[Brochure]:
+        """ Process all shops on the sidebar.
+        
         Args:
-            brochure: Locator for brochure element
-            shop_name: Name of the shop
+            sidebar_urls: Dictionary of shop names and URLs
         
         Returns:
-            Brochure object if brochure is valid, else None
+            List of all valid brochures
         
         """
-        # Check if brochure is marked as 'old' by website
-        if brochure.locator(".grid-item-old").count() > 1:
-            return None
-        
-        # Get title and thumbnail
-        title = brochure.locator("strong").text_content() or ""
-        thumbnail = brochure.locator("img").get_attribute("src") or ""
+        all_valid_brochures = []
 
-        # Get text of the element with the dates
-        date_text = brochure.locator(".grid-item-content small.hidden-sm").text_content()
-        dates = extract_dates(date_text or "")
+        for shop_name, url in sidebar_urls.items():
+            shop_brochures = self.process_shop(shop_name, url)
+            all_valid_brochures.extend(shop_brochures)
 
-        # Check if date is currently valid
-        if not is_valid_now(dates[0], dates[1]):
-            return None
-        
-        return Brochure(
-            title= title,
-            thumbnail= thumbnail,
-            shop_name= shop_name,
-            valid_from= dates[0],
-            valid_to= dates[1]
-        )
+        return all_valid_brochures
     
     def process_shop(self, shop_name: str, url: str) -> List[Brochure]:
         """ Process a single shop page.
@@ -142,24 +132,41 @@ class ProspektScraper:
         except Exception as e:
             print(f"Error while processing shop {shop_name}: {e}")
             return []
-            
-    def process_all_shops(self, sidebar_urls: Dict[str, str]) -> List[Brochure]:
-        """ Process all shops on the sidebar.
-        
+    
+    def parse_brochure(self, brochure: Locator, shop_name: str) -> Optional[Brochure]:
+        """ Parse brochure data.
+
         Args:
-            sidebar_urls: Dictionary of shop names and URLs
+            brochure: Locator for brochure element
+            shop_name: Name of the shop
         
         Returns:
-            List of all valid brochures
+            Brochure object if brochure is valid, else None
         
         """
-        all_valid_brochures = []
+        # Check if brochure is marked as 'old' by website
+        if brochure.locator(".grid-item-old").count() > 1:
+            return None
+        
+        # Get title and thumbnail
+        title = brochure.locator("strong").text_content() or ""
+        thumbnail = brochure.locator("img").get_attribute("src") or ""
 
-        for shop_name, url in sidebar_urls.items():
-            shop_brochures = self.process_shop(shop_name, url)
-            all_valid_brochures.extend(shop_brochures)
+        # Get text of the element with the dates
+        date_text = brochure.locator(".grid-item-content small.hidden-sm").text_content()
+        dates = extract_dates(date_text or "")
 
-        return all_valid_brochures
+        # Check if date is currently valid
+        if not is_valid_now(dates[0], dates[1]):
+            return None
+        
+        return Brochure(
+            title= title,
+            thumbnail= thumbnail,
+            shop_name= shop_name,
+            valid_from= dates[0],
+            valid_to= dates[1]
+        )
 
     def save_results(self, results: List[Brochure]):
         """ Save brochures to JSON file.
@@ -175,17 +182,10 @@ class ProspektScraper:
         
         with open(self.output_file, 'w', encoding='utf-8') as f:
             json.dump(json_list, f, ensure_ascii=False, indent=4)
-
-    def run(self):
-        """ Main execution
+    
+    def close_browser(self):
+        """ Close browser and playwright. 
         
         """
-        try:
-            self.navigate_to(self.hypermarket_url)
-            sidebar_urls = self.get_sidebar_urls()
-            results = self.process_all_shops(sidebar_urls)
-            self.save_results(results)
-        except Exception as e:
-            print(f"Error occured: {e}")
-        finally:
-            self.close_browser()
+        self.browser.close()
+        self.playwright.stop()
