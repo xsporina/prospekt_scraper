@@ -117,9 +117,8 @@ class ProspektScraper:
             if not page_brochures:
                 return []
             
-            # Find out which brochures are valid
             valid_brochures = []
-
+            # Find out which brochures are valid
             for brochure in page_brochures:
                 # Parse brochure
                 parsed_brochure = self.parse_brochure(brochure, shop_name)
@@ -180,7 +179,7 @@ class ProspektScraper:
             results: List of brochure objects
 
         """
-        print(len(results))
+        print("Brochure count: ", len(results))
 
         # Convert dictionaries to JSON
         json_list = [b.__dict__ for b in results]

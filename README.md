@@ -8,6 +8,29 @@ A web scraper for prospektmaschine.de that collects brochure information from va
 - Filters outdated brochures
 - Exports results to JSON format
 
+## How It Works
+
+The following diagram illustrates the workflow of the ProspektScraper:
+
+```mermaid
+flowchart TD
+    A[Initialize ProspektScraper] --> B[Navigate to hypermarket URL]
+    B --> C[Extract sidebar shop URLs]
+    C --> D[For each shop URL]
+    D --> E[Navigate to shop page]
+    E --> F[Extract brochure elements]
+    F --> G{For each brochure}
+    G --> H[Parse brochure data]
+    H --> I{Is brochure valid?}
+    I -- Yes --> J[Add to results]
+    I -- No --> G
+    G --> K[Next brochure]
+    K --> G
+    D --> L[Next shop]
+    L --> D
+    D --> M[Save results to JSON]
+    M --> N[Close browser]
+
 ## Installation
 
 1. Clone the repository:
