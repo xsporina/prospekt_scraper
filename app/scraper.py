@@ -10,11 +10,12 @@ from utils.date_utils import extract_dates, is_valid_now, reformat_dates
 class ProspektScraper:
     """ Scraper for prospektmaschine.de."""
 
-    def __init__(self, hypermarket_url, date_format="%Y-%m-%d", output_file="output/output.json"):
+    def __init__(self, hypermarket_url: str, date_format="%Y-%m-%d", output_file="output/output.json"):
         """ Initialize scraper.
         
         Args:
             hypermarket_url: URL to scrape
+            date_format: Desired formatting of the dates valid_from and valid_to
             output_file: Optional file name and/or path
         
         """
@@ -42,7 +43,7 @@ class ProspektScraper:
         finally:
             self.close_browser()
     
-    def navigate_to(self, url):
+    def navigate_to(self, url: str):
         """ Navigate to URL while imitating human behavior.
         
         """
