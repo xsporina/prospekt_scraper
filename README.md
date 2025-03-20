@@ -12,7 +12,7 @@ A web scraper for prospektmaschine.de that collects brochure information from hy
 
 ```mermaid
 graph TD;
-    A[Initialize ProspektScraper] --> B[Get all shops from the category]
+    A[Initialize ProspektScraper] --> B[Get all shops from the sidebar]
     B --> C[Extract valid brochures from each shop]
     C --> D[Save results to JSON]
     D --> E[Close browser]
