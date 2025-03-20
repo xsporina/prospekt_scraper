@@ -9,7 +9,7 @@ class Brochure:
     shop_name: str
     valid_from: Optional[str]
     valid_to: Optional[str]
-    parsed_time: str | None = None
+    parsed_time: Optional[str]
 
     def __post_init__(self):
         if self.parsed_time is None:
