@@ -12,22 +12,10 @@ A web scraper for prospektmaschine.de that collects brochure information from hy
 
 ```mermaid
 graph TD;
-    A[Initialize ProspektScraper] --> B[Navigate to hypermarket URL]
-    B --> C[Extract sidebar shop URLs]
-    C --> D[For each shop URL]
-    D --> E[Navigate to shop page]
-    E --> F[Extract brochure elements]
-    F --> G{For each brochure}
-    G --> H[Parse brochure data]
-    H --> I{Is brochure valid?}
-    I -- Yes --> J[Add to results]
-    I -- No --> G
-    G --> K[Next brochure]
-    K --> G
-    D --> L[Next shop]
-    L --> D
-    D --> M[Save results to JSON]
-    M --> N[Close browser]
+    A[Initialize ProspektScraper] --> B[For each shop in category]
+    B --> C[Extract valid brochures]
+    C --> D[Save results to JSON]
+    D --> E[Close browser]
 ```
 
 ## Installation
